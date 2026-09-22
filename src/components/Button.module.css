@@ -1,0 +1,49 @@
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radio);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
+}
+
+.boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.primario {
+  background: var(--color-primario);
+  color: white;
+}
+
+.primario:not(:disabled):hover {
+  background: var(--color-primario-hover);
+}
+
+.secundario {
+  background: transparent;
+  border-color: var(--color-borde);
+  color: var(--color-texto);
+}
+
+.secundario:not(:disabled):hover {
+  background: var(--color-superficie-clara);
+}
+
+.peligro {
+  background: var(--color-peligro);
+  color: white;
+}
+
+.peligro:not(:disabled):hover {
+  opacity: 0.9;
+}

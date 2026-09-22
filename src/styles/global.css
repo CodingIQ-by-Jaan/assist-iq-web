@@ -1,0 +1,45 @@
+:root {
+  --color-fondo: #0f172a;
+  --color-superficie: #1e293b;
+  --color-superficie-clara: #334155;
+  --color-borde: #334155;
+  --color-texto: #f1f5f9;
+  --color-texto-tenue: #94a3b8;
+  --color-primario: #4f46e5;
+  --color-primario-hover: #4338ca;
+  --color-peligro: #ef4444;
+  --color-exito: #22c55e;
+  --radio: 8px;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}

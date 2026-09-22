@@ -1,0 +1,19 @@
+.formulario,
+.confirmar,
+.confirmacion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.saludo {
+  margin: 0;
+  font-size: 16px;
+  text-align: center;
+}
+
+.botonesMarcaje {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

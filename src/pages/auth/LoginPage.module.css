@@ -1,0 +1,29 @@
+.contenedor {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.tarjeta {
+  width: 100%;
+  max-width: 360px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 24px;
+}
+
+.subtitulo {
+  margin: 4px 0 24px;
+  color: var(--color-texto-tenue);
+  font-size: 14px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
