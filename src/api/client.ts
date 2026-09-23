@@ -78,4 +78,30 @@ export const peticion = async <T>(ruta: string, opciones: OpcionesPeticion = {})
 const esApiError401 = (error: unknown): boolean =>
   error instanceof ApiError && error.status === 401;
 
+// Para descargas binarias (PDF, etc.): no asume que la respuesta es JSON.
+// Reintenta una vez tras un refresh exitoso, igual que peticion().
+export const peticionArchivo = async (ruta: string, opciones: OpcionesPeticion = {}): Promise<Blob> => {
+  const token = obtenerToken();
+  const respuesta = await fetch(construirUrl(ruta, opciones.params), {
+    method: opciones.method ?? 'GET',
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    credentials: 'include',
+  });
+
+  if (respuesta.status === 401 && !opciones.sinRefresh) {
+    const refrescado = await refrescarSesion();
+    if (refrescado) return peticionArchivo(ruta, { ...opciones, sinRefresh: true });
+  }
+
+  if (!respuesta.ok) {
+    const esJson = respuesta.headers.get('content-type')?.includes('application/json');
+    const cuerpo = esJson ? await respuesta.json().catch(() => undefined) : undefined;
+    throw new ApiError(respuesta.status, cuerpo as CuerpoErrorApi | undefined);
+  }
+
+  return respuesta.blob();
+};
+
 export { ApiError, esApiError } from './errors';

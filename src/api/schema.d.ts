@@ -279,6 +279,72 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/reportes/horas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Horas trabajadas y pago por empleado en un rango de fechas */
+        get: operations["ReportesController_horas"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reportes/horas/pdf": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** El mismo reporte de horas, en PDF */
+        get: operations["ReportesController_horasPdf"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reglas-recargo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ReglasRecargoController_listar"];
+        put?: never;
+        post: operations["ReglasRecargoController_crear"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reglas-recargo/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ReglasRecargoController_actualizar"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -379,6 +445,7 @@ export interface components {
             apellido: string;
             identidad: string | null;
             cargo: string | null;
+            salarioBase: number | null;
             activo: boolean;
             /**
              * Format: date-time
@@ -421,6 +488,11 @@ export interface components {
             identidad?: string;
             /** @example Cajera */
             cargo?: string;
+            /**
+             * @description Salario base mensual en Lempiras. La tarifa por hora usada en los reportes se deriva como salarioBase / 240 (30 días × 8 horas). Se omite (o null) si aún no se define.
+             * @example 12000
+             */
+            salarioBase?: number | null;
         };
         EmpleadoCreadoDto: {
             empleado: components["schemas"]["EmpleadoDto"];
@@ -444,6 +516,11 @@ export interface components {
             identidad?: string;
             /** @example Cajera */
             cargo?: string;
+            /**
+             * @description Salario base mensual en Lempiras. La tarifa por hora usada en los reportes se deriva como salarioBase / 240 (30 días × 8 horas). Se omite (o null) si aún no se define.
+             * @example 12000
+             */
+            salarioBase?: number | null;
             activo?: boolean;
         };
         ResetPinDto: {
@@ -569,6 +646,109 @@ export interface components {
         MarcajesPaginadosDto: {
             data: components["schemas"]["MarcajeDto"][];
             meta: components["schemas"]["PaginationMetaDto"];
+        };
+        EmpresaResumenReporteDto: {
+            id: string;
+            nombre: string;
+        };
+        DesgloseReglaReporteDto: {
+            reglaId: string;
+            nombre: string;
+            /** @description Porcentaje extra de esta regla, ej. 25 = 25%. */
+            porcentaje: number;
+            /** @description Horas trabajadas dentro de la franja de esta regla. */
+            horas: number;
+            /** @description Monto extra pagado por esta regla (horas × tarifa base × porcentaje/100). */
+            monto: number;
+        };
+        EmpleadoReporteDto: {
+            empleadoId: string;
+            codigo: string;
+            nombre: string;
+            apellido: string;
+            /** @description Horas trabajadas en el rango, ya descontado el almuerzo. */
+            horas: number;
+            /** @description Salario base mensual en Lempiras (null si no está definido). */
+            salarioBase: number | null;
+            /** @description salarioBase / 240 (30 días × 8 horas). Null si no hay salario definido. */
+            tarifaHoraBase: number | null;
+            /** @description horas × tarifaHoraBase, sin recargos. Null si no hay salario definido. */
+            pagoBase: number | null;
+            /** @description Recargos aplicados (solo las reglas con horas > 0 en el periodo). */
+            desglose: components["schemas"]["DesgloseReglaReporteDto"][];
+            /** @description pagoBase + la suma de los montos del desglose. Null si no hay salario definido. */
+            pago: number | null;
+            /** @description Turnos del rango que quedaron sin marcar la salida (no se cuentan en las horas). */
+            turnosIncompletos: number;
+        };
+        TotalesReporteDto: {
+            horas: number;
+            /** @description Null si ningún empleado del reporte tiene salario definido. */
+            pago: number | null;
+        };
+        ReporteHorasDto: {
+            empresa: components["schemas"]["EmpresaResumenReporteDto"];
+            desde: string;
+            hasta: string;
+            empleados: components["schemas"]["EmpleadoReporteDto"][];
+            totales: components["schemas"]["TotalesReporteDto"];
+        };
+        ReglaRecargoDto: {
+            id: string;
+            empresaId: string;
+            nombre: string;
+            horaInicio: string;
+            horaFin: string;
+            porcentaje: number;
+            activa: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        CreateReglaRecargoDto: {
+            /**
+             * Format: uuid
+             * @description Obligatorio para SUPER_ADMIN. Se ignora para ADMIN_EMPRESA.
+             */
+            empresaId?: string;
+            /** @example Nocturnidad */
+            nombre: string;
+            /**
+             * @description Hora local de inicio de la banda, formato HH:mm
+             * @example 20:00
+             */
+            horaInicio: string;
+            /**
+             * @description Hora local de fin de la banda, formato HH:mm. Si es menor que horaInicio, la banda cruza la medianoche.
+             * @example 04:00
+             */
+            horaFin: string;
+            /**
+             * @description Porcentaje extra sobre la tarifa base para las horas dentro de esta banda
+             * @example 25
+             */
+            porcentaje: number;
+        };
+        UpdateReglaRecargoDto: {
+            /** @example Nocturnidad */
+            nombre?: string;
+            /**
+             * @description Hora local de inicio de la banda, formato HH:mm
+             * @example 20:00
+             */
+            horaInicio?: string;
+            /**
+             * @description Hora local de fin de la banda, formato HH:mm. Si es menor que horaInicio, la banda cruza la medianoche.
+             * @example 04:00
+             */
+            horaFin?: string;
+            /**
+             * @description Porcentaje extra sobre la tarifa base para las horas dentro de esta banda
+             * @example 25
+             */
+            porcentaje?: number;
+            activa?: boolean;
         };
     };
     responses: never;
@@ -1085,6 +1265,130 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MarcajesPaginadosDto"];
+                };
+            };
+        };
+    };
+    ReportesController_horas: {
+        parameters: {
+            query: {
+                /** @description Obligatorio para SUPER_ADMIN. Se ignora para ADMIN_EMPRESA. */
+                empresaId?: string;
+                /** @description Si se omite, incluye a todos los empleados activos de la empresa. */
+                empleadoId?: string;
+                /** @description Inicio del rango, fecha local de la empresa (inclusive). */
+                desde: string;
+                /** @description Fin del rango, fecha local de la empresa (inclusive). */
+                hasta: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReporteHorasDto"];
+                };
+            };
+        };
+    };
+    ReportesController_horasPdf: {
+        parameters: {
+            query: {
+                /** @description Obligatorio para SUPER_ADMIN. Se ignora para ADMIN_EMPRESA. */
+                empresaId?: string;
+                /** @description Si se omite, incluye a todos los empleados activos de la empresa. */
+                empleadoId?: string;
+                /** @description Inicio del rango, fecha local de la empresa (inclusive). */
+                desde: string;
+                /** @description Fin del rango, fecha local de la empresa (inclusive). */
+                hasta: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ReglasRecargoController_listar: {
+        parameters: {
+            query?: {
+                /** @description SUPER_ADMIN: filtra por empresa */
+                empresaId?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReglaRecargoDto"][];
+                };
+            };
+        };
+    };
+    ReglasRecargoController_crear: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReglaRecargoDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReglaRecargoDto"];
+                };
+            };
+        };
+    };
+    ReglasRecargoController_actualizar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateReglaRecargoDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReglaRecargoDto"];
                 };
             };
         };

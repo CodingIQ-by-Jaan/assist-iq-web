@@ -31,6 +31,9 @@ export const EmpleadoFormulario = ({
   const [apellido, setApellido] = useState(valorInicial?.apellido ?? '');
   const [identidad, setIdentidad] = useState(valorInicial?.identidad ?? '');
   const [cargo, setCargo] = useState(valorInicial?.cargo ?? '');
+  const [salarioBaseTexto, setSalarioBaseTexto] = useState(
+    valorInicial?.salarioBase != null ? String(valorInicial.salarioBase) : '',
+  );
   const [activo, setActivo] = useState(valorInicial?.activo ?? true);
   const [error, setError] = useState<string | null>(null);
   const [guardando, setGuardando] = useState(false);
@@ -57,6 +60,7 @@ export const EmpleadoFormulario = ({
           apellido: apellido.trim(),
           identidad: identidad.trim() || undefined,
           cargo: cargo.trim() || undefined,
+          salarioBase: salarioBaseTexto.trim() === '' ? null : Number(salarioBaseTexto),
           activo,
         };
         await onGuardar(dto);
@@ -68,6 +72,7 @@ export const EmpleadoFormulario = ({
           apellido: apellido.trim(),
           identidad: identidad.trim() || undefined,
           cargo: cargo.trim() || undefined,
+          salarioBase: salarioBaseTexto.trim() === '' ? undefined : Number(salarioBaseTexto),
         };
         await onGuardar(dto);
       }
@@ -116,6 +121,17 @@ export const EmpleadoFormulario = ({
         value={cargo}
         onChange={(evento) => setCargo(evento.target.value)}
         placeholder="Cajera"
+      />
+
+      <Input
+        etiqueta="Salario base mensual en L (opcional)"
+        name="salarioBase"
+        type="number"
+        min={0}
+        step="0.01"
+        value={salarioBaseTexto}
+        onChange={(evento) => setSalarioBaseTexto(evento.target.value)}
+        placeholder="Para calcular el pago en los reportes de horas"
       />
 
       {esEdicion && (

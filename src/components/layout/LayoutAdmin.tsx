@@ -12,6 +12,8 @@ const enlacesPara = (esSuperAdmin: boolean) => [
   ...(esSuperAdmin ? [{ a: '/empresas', etiqueta: 'Empresas' }] : []),
   ...(esSuperAdmin ? [{ a: '/administradores', etiqueta: 'Administradores' }] : []),
   { a: '/empleados', etiqueta: 'Empleados' },
+  { a: '/reportes', etiqueta: 'Reportes' },
+  { a: '/configuracion', etiqueta: 'Configuración' },
 ];
 
 export const LayoutAdmin = () => {

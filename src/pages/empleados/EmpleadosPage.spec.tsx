@@ -21,6 +21,7 @@ const empleadoBase: EmpleadoDto = {
   apellido: 'López',
   identidad: null,
   cargo: 'Cajera',
+  salarioBase: null,
   activo: true,
   bloqueadoHasta: null,
   createdAt: '2026-01-01T00:00:00.000Z',

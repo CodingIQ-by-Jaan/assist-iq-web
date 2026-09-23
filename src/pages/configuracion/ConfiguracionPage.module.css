@@ -1,0 +1,10 @@
+.filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.accionesFila {
+  display: flex;
+  gap: 8px;
+}

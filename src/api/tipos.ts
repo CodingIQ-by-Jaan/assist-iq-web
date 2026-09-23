@@ -59,3 +59,24 @@ export interface ListarUsuariosAdminQuery {
   search?: string;
   [clave: string]: string | number | boolean | undefined;
 }
+
+export type ReporteHorasDto = Schemas['ReporteHorasDto'];
+export type EmpleadoReporteDto = ReporteHorasDto['empleados'][number];
+
+export interface GenerarReporteQuery {
+  empresaId?: string;
+  empleadoId?: string;
+  desde: string;
+  hasta: string;
+  [clave: string]: string | number | boolean | undefined;
+}
+
+export type ReglaRecargoDto = Schemas['ReglaRecargoDto'];
+export type CreateReglaRecargoDto = Schemas['CreateReglaRecargoDto'];
+export type UpdateReglaRecargoDto = Schemas['UpdateReglaRecargoDto'];
+export type DesgloseReglaReporteDto = Schemas['DesgloseReglaReporteDto'];
+
+export interface ListarReglasRecargoQuery {
+  empresaId?: string;
+  [clave: string]: string | number | boolean | undefined;
+}

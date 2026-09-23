@@ -8,6 +8,8 @@ import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { EmpresasPage } from './pages/empresas/EmpresasPage';
 import { EmpleadosPage } from './pages/empleados/EmpleadosPage';
 import { AdministradoresPage } from './pages/administradores/AdministradoresPage';
+import { ReportesPage } from './pages/reportes/ReportesPage';
+import { ConfiguracionPage } from './pages/configuracion/ConfiguracionPage';
 import { KioscoPage } from './pages/kiosco/KioscoPage';
 
 export const App = () => (
@@ -20,6 +22,8 @@ export const App = () => (
         <Route element={<LayoutAdmin />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/empleados" element={<EmpleadosPage />} />
+          <Route path="/reportes" element={<ReportesPage />} />
+          <Route path="/configuracion" element={<ConfiguracionPage />} />
 
           {/* Solo SUPER_ADMIN: gestión global de empresas y sus administradores */}
           <Route element={<RutaConRol roles={['SUPER_ADMIN']} />}>

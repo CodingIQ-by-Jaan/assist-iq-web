@@ -117,6 +117,12 @@ export const EmpleadosPage = () => {
     { clave: 'identidad', encabezado: 'Identidad', render: (empleado) => empleado.identidad ?? '—' },
     { clave: 'cargo', encabezado: 'Cargo', render: (empleado) => empleado.cargo ?? '—' },
     {
+      clave: 'salarioBase',
+      encabezado: 'Salario base',
+      ancho: '120px',
+      render: (empleado) => (empleado.salarioBase != null ? `L ${empleado.salarioBase.toFixed(2)}` : '—'),
+    },
+    {
       clave: 'estado',
       encabezado: 'Estado',
       ancho: '130px',
