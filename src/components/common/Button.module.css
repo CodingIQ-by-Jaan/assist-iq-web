@@ -21,12 +21,12 @@
 }
 
 .primario {
-  background: var(--color-primario);
+  background: var(--color-acento);
   color: white;
 }
 
 .primario:not(:disabled):hover {
-  background: var(--color-primario-hover);
+  background: var(--color-acento-hover);
 }
 
 .secundario {

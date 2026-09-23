@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import { Spinner } from '../components/Spinner';
+import { Spinner } from '../components/common/Spinner';
 
 export const RutaProtegida = () => {
   const { usuario, cargando } = useAuth();

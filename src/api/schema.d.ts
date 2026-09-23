@@ -164,6 +164,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/usuarios-admin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UsuariosAdminController_listar"];
+        put?: never;
+        post: operations["UsuariosAdminController_crear"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/usuarios-admin/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["UsuariosAdminController_actualizar"];
+        trace?: never;
+    };
+    "/usuarios-admin/{id}/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["UsuariosAdminController_restablecerPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/public/kiosco/{slug}": {
         parameters: {
             query?: never;
@@ -263,6 +311,7 @@ export interface components {
             slug: string;
             rtn: string | null;
             zonaHoraria: string;
+            limiteEmpleados: number | null;
             activa: boolean;
             /** Format: date-time */
             createdAt: string;
@@ -294,6 +343,11 @@ export interface components {
              * @example America/Tegucigalpa
              */
             zonaHoraria: string;
+            /**
+             * @description Tope de empleados activos permitidos según el plan contratado. Se omite (o null) para sin límite.
+             * @example 15
+             */
+            limiteEmpleados?: number | null;
         };
         UpdateEmpresaDto: {
             /** @example Pizzería El Sol */
@@ -310,6 +364,11 @@ export interface components {
              * @example America/Tegucigalpa
              */
             zonaHoraria: string;
+            /**
+             * @description Tope de empleados activos permitidos según el plan contratado. Se omite (o null) para sin límite.
+             * @example 15
+             */
+            limiteEmpleados?: number | null;
             activa?: boolean;
         };
         EmpleadoDto: {
@@ -397,6 +456,52 @@ export interface components {
         PinRestablecidoDto: {
             /** @description PIN en texto plano. Solo se devuelve en esta respuesta. */
             pin: string;
+        };
+        UsuarioAdminDto: {
+            id: string;
+            email: string;
+            nombre: string;
+            rol: components["schemas"]["Rol"];
+            empresaId: string | null;
+            activo: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        UsuariosAdminPaginadosDto: {
+            data: components["schemas"]["UsuarioAdminDto"][];
+            meta: components["schemas"]["PaginationMetaDto"];
+        };
+        CreateUsuarioAdminDto: {
+            /**
+             * Format: uuid
+             * @description Empresa a la que pertenece este administrador
+             */
+            empresaId: string;
+            /** @example admin@pizzeria.com */
+            email: string;
+            /** @example Ana Martínez */
+            nombre: string;
+            /** @description Si se omite se genera una contraseña aleatoria. */
+            password?: string;
+        };
+        UsuarioAdminCreadoDto: {
+            usuario: components["schemas"]["UsuarioAdminDto"];
+            /** @description Contraseña en texto plano. Solo se devuelve en esta respuesta. */
+            password: string;
+        };
+        UpdateUsuarioAdminDto: {
+            nombre?: string;
+            activo?: boolean;
+        };
+        ResetPasswordUsuarioAdminDto: {
+            /** @description Si se omite se genera una contraseña aleatoria. */
+            password?: string;
+        };
+        PasswordRestablecidaDto: {
+            /** @description Contraseña en texto plano. Solo se devuelve en esta respuesta. */
+            password: string;
         };
         KioscoInfoDto: {
             nombre: string;
@@ -780,6 +885,105 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PinRestablecidoDto"];
+                };
+            };
+        };
+    };
+    UsuariosAdminController_listar: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                /** @description Filtra por empresa */
+                empresaId?: string;
+                /** @description Busca por nombre o correo */
+                search?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuariosAdminPaginadosDto"];
+                };
+            };
+        };
+    };
+    UsuariosAdminController_crear: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUsuarioAdminDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuarioAdminCreadoDto"];
+                };
+            };
+        };
+    };
+    UsuariosAdminController_actualizar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUsuarioAdminDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsuarioAdminDto"];
+                };
+            };
+        };
+    };
+    UsuariosAdminController_restablecerPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetPasswordUsuarioAdminDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PasswordRestablecidaDto"];
                 };
             };
         };

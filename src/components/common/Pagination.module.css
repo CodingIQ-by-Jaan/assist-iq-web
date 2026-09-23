@@ -1,0 +1,18 @@
+.contenedor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.info {
+  font-size: 13px;
+  color: var(--color-texto-tenue);
+}
+
+.botones {
+  display: flex;
+  gap: 8px;
+}

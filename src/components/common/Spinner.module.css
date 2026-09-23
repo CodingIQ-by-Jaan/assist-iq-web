@@ -24,6 +24,13 @@
   color: var(--color-primario);
 }
 
+/* En pantalla completa el spinner va sobre el fondo de la página (no un botón de color fijo),
+   así que la pista también debe seguir el tema activo para seguir siendo visible */
+.contenedorCompleto .spinner {
+  border-color: var(--color-borde);
+  border-top-color: currentColor;
+}
+
 @keyframes girar {
   to {
     transform: rotate(360deg);

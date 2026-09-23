@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import { obtenerInfoKiosco } from '../../api/endpoints/kiosco';
 import { esApiError } from '../../api/errors';
 import type { KioscoInfoDto } from '../../api/tipos';
-import { Card } from '../../components/Card';
-import { Banner } from '../../components/Banner';
-import { Spinner } from '../../components/Spinner';
-import { FormularioMarcaje } from './FormularioMarcaje';
+import { Card } from '../../components/common/Card';
+import { Banner } from '../../components/common/Banner';
+import { Spinner } from '../../components/common/Spinner';
+import { ThemeToggle } from '../../components/common/ThemeToggle';
+import { FormularioMarcaje } from '../../components/kiosco/FormularioMarcaje';
 import styles from './KioscoPage.module.css';
 
 type Estado =
@@ -42,6 +43,9 @@ export const KioscoPage = () => {
 
   return (
     <div className={styles.contenedor}>
+      <div className={styles.alternarTema}>
+        <ThemeToggle />
+      </div>
       <Card className={styles.tarjeta}>
         {estado.fase === 'cargando' && <Spinner />}
 

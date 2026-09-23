@@ -2,10 +2,12 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { Card } from '../../components/Card';
-import { Banner } from '../../components/Banner';
+import { Button } from '../../components/common/Button';
+import { Input } from '../../components/common/Input';
+import { Card } from '../../components/common/Card';
+import { Banner } from '../../components/common/Banner';
+import { Logo } from '../../components/common/Logo';
+import { ThemeToggle } from '../../components/common/ThemeToggle';
 import { esApiError } from '../../api/errors';
 import styles from './LoginPage.module.css';
 
@@ -41,8 +43,13 @@ export const LoginPage = () => {
 
   return (
     <div className={styles.contenedor}>
+      <div className={styles.alternarTema}>
+        <ThemeToggle />
+      </div>
       <Card className={styles.tarjeta}>
-        <h1 className={styles.titulo}>AssistIQ</h1>
+        <h1 className={styles.titulo}>
+          <Logo tamanoIcono={34} />
+        </h1>
         <p className={styles.subtitulo}>Panel de administración</p>
 
         <form className={styles.formulario} onSubmit={(e) => void enviar(e)}>

@@ -1,0 +1,8 @@
+.selector {
+  padding: 10px 12px;
+  border-radius: var(--radio);
+  border: 1px solid var(--color-borde);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font-size: 14px;
+}

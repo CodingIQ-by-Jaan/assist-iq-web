@@ -3,9 +3,9 @@ import type { FormEvent } from 'react';
 import { consultarEstado, marcar } from '../../api/endpoints/kiosco';
 import { esApiError } from '../../api/errors';
 import type { EstadoKioscoDto, MarcarRespuestaDto, TipoMarcaje } from '../../api/tipos';
-import { Button } from '../../components/Button';
-import { Input } from '../../components/Input';
-import { Banner } from '../../components/Banner';
+import { Button } from '../common/Button';
+import { Input } from '../common/Input';
+import { Banner } from '../common/Banner';
 import { ETIQUETAS_MARCAJE } from './etiquetas';
 import styles from './FormularioMarcaje.module.css';
 

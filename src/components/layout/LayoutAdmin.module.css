@@ -6,16 +6,19 @@
 .barraLateral {
   width: 220px;
   flex-shrink: 0;
-  background: var(--color-superficie);
-  border-right: 1px solid var(--color-borde);
+  background: var(--color-barra-fondo);
+  border-right: 1px solid var(--color-barra-borde);
   padding: 20px 16px;
 }
 
 .marca {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--color-texto);
+  font-size: 18px;
   margin-bottom: 24px;
+  /* El wordmark del logo usa var(--color-marca-assist)/var(--color-marca-iq), que sí cambian
+     con el tema (pensadas para fondos claros u oscuros según corresponda). Como esta barra
+     siempre es oscura, se fijan aquí los tonos pensados para fondo oscuro. */
+  --color-marca-assist: var(--color-barra-marca-assist);
+  --color-marca-iq: var(--color-barra-marca-iq);
 }
 
 .nav {
@@ -27,15 +30,15 @@
 .enlace {
   padding: 10px 12px;
   border-radius: var(--radio);
-  color: var(--color-texto-tenue);
+  color: var(--color-barra-texto-tenue);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
 }
 
 .enlace:hover {
-  background: var(--color-superficie-clara);
-  color: var(--color-texto);
+  background: var(--color-barra-hover-bg);
+  color: var(--color-barra-texto);
 }
 
 .enlaceActivo {

@@ -1,16 +1,87 @@
+/* Tema oscuro: por defecto, y el único hasta que el usuario elige explícitamente el claro
+   (el cambio es siempre manual — ver src/theme/ThemeContext.tsx — nunca se detecta prefers-color-scheme) */
 :root {
-  --color-fondo: #0f172a;
-  --color-superficie: #1e293b;
-  --color-superficie-clara: #334155;
-  --color-borde: #334155;
+  /* Un tono más claro que la barra lateral (fija en #0f172a) para que se distinga de ella;
+     superficie y superficie-clara siguen la misma escala, un paso más claro cada una */
+  --color-fondo: #1e293b;
+  --color-superficie: #334155;
+  --color-superficie-clara: #475569;
+  --color-borde: #475569;
   --color-texto: #f1f5f9;
   --color-texto-tenue: #94a3b8;
-  --color-primario: #4f46e5;
-  --color-primario-hover: #4338ca;
+  /* Azul: identidad de marca (navegación activa, foco, enlaces) */
+  --color-primario: #2563eb;
+  --color-primario-hover: #1d4ed8;
+  /* Naranja: acento de acción (el check del logo) — botones primarios / llamadas a la acción */
+  --color-acento: #f97316;
+  --color-acento-hover: #ea580c;
   --color-peligro: #ef4444;
   --color-exito: #22c55e;
+
+  /* Barra lateral: SIEMPRE azul oscuro, fijo — no cambia con el tema claro/oscuro
+     (a propósito no se redeclaran estas variables en el bloque [data-theme='claro']) */
+  --color-barra-fondo: #0f172a;
+  --color-barra-borde: #1e293b;
+  --color-barra-texto: #f1f5f9;
+  --color-barra-texto-tenue: #94a3b8;
+  --color-barra-hover-bg: rgba(255, 255, 255, 0.06);
+  --color-barra-marca-assist: #60a5fa;
+  --color-barra-marca-iq: #f97316;
+
+  /* Tonos de fondo/borde/texto para banners y badges (éxito, peligro, informativo) */
+  --color-exito-bg: rgba(34, 197, 94, 0.12);
+  --color-exito-borde: rgba(34, 197, 94, 0.4);
+  --color-exito-texto: #86efac;
+  --color-peligro-bg: rgba(239, 68, 68, 0.12);
+  --color-peligro-borde: rgba(239, 68, 68, 0.4);
+  --color-peligro-texto: #fca5a5;
+  --color-info-bg: rgba(37, 99, 235, 0.12);
+  --color-info-borde: rgba(37, 99, 235, 0.4);
+  --color-info-texto: #93c5fd;
+
+  /* Wordmark del logo (Logo.tsx) */
+  --color-marca-assist: #60a5fa;
+  --color-marca-iq: #f97316;
+
+  --color-tabla-hover: rgba(255, 255, 255, 0.02);
+  --color-superposicion: rgba(0, 0, 0, 0.6);
   --radio: 8px;
   --sombra: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --sombra-modal: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Tema claro: activado agregando data-theme="claro" a <html> (ThemeContext) */
+:root[data-theme='claro'] {
+  --color-fondo: #f8fafc;
+  --color-superficie: #ffffff;
+  --color-superficie-clara: #e2e8f0;
+  --color-borde: #e2e8f0;
+  --color-texto: #0f172a;
+  --color-texto-tenue: #64748b;
+  --color-primario: #2563eb;
+  --color-primario-hover: #1d4ed8;
+  --color-acento: #f97316;
+  --color-acento-hover: #ea580c;
+  --color-peligro: #dc2626;
+  --color-exito: #16a34a;
+
+  --color-exito-bg: rgba(22, 163, 74, 0.08);
+  --color-exito-borde: rgba(22, 163, 74, 0.3);
+  --color-exito-texto: #15803d;
+  --color-peligro-bg: rgba(220, 38, 38, 0.08);
+  --color-peligro-borde: rgba(220, 38, 38, 0.3);
+  --color-peligro-texto: #b91c1c;
+  --color-info-bg: rgba(37, 99, 235, 0.08);
+  --color-info-borde: rgba(37, 99, 235, 0.3);
+  --color-info-texto: #1d4ed8;
+
+  --color-marca-assist: #2563eb;
+  --color-marca-iq: #ea580c;
+
+  --color-tabla-hover: rgba(15, 23, 42, 0.03);
+  --color-superposicion: rgba(15, 23, 42, 0.4);
+  --sombra: 0 1px 2px rgba(15, 23, 42, 0.08);
+  --sombra-modal: 0 8px 24px rgba(15, 23, 42, 0.15);
 }
 
 * {
@@ -33,6 +104,9 @@ body {
     'Segoe UI',
     Roboto,
     sans-serif;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
 }
 
 button,

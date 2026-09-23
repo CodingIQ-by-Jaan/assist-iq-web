@@ -1,9 +1,16 @@
 .contenedor {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
+}
+
+.alternarTema {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .tarjeta {
@@ -13,7 +20,9 @@
 
 .titulo {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
 }
 
 .subtitulo {

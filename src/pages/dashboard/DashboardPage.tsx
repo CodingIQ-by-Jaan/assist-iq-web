@@ -1,5 +1,5 @@
 import { useAuth } from '../../auth/AuthContext';
-import { Card } from '../../components/Card';
+import { Card } from '../../components/common/Card';
 
 // Placeholder de la fase 1: las tarjetas de empresas/empleados llegan en la fase 2
 export const DashboardPage = () => {
